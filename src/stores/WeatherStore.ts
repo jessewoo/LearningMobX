@@ -1,11 +1,15 @@
 import { decorate, action, observable, configure, runInAction, flow } from "mobx";
 
+// Have it on default, write MobX code correctly
 configure({ enforceActions: true });
 
 class WeatherStore {
     // @observable
     weatherData = {};
 
+    // constructor() {
+    //     this.weatherData = this.weatherData.bind(this);
+    // }
 
     // There is ONE ISSUE - when you use actions in MobX, anytime you are changing your observable data, it's supposed to be done directly in the ACTION FUNCTION
     // Currently, we are changing the observable data NOT in the action function itself but in the THEN PROMISE CALLBACK
@@ -38,9 +42,7 @@ class WeatherStore {
     };
 
 
-
-
-    // METHOD 2: Use of runInAction function
+    // METHOD 2: Use of runInAction function, do INLINE
     loadWeatherInline = (city:string) => {
         fetch(`https://abnormal-weather-api.herokuapp.com/cities/search?city=${city}`)
             .then(response => response.json())
@@ -69,14 +71,16 @@ class WeatherStore {
     // What FLOW will do - yield control
     // It will wrap around with a FLOW function, every time we yield control, this will be wrapped in action like runInAction
     // READS more like a code in async await, don't need to show RunInAction
-    loadWeatherGenerator = flow(function*(city:string) {
+    loadWeatherGenerator = flow(function*(this:any, city:string) {
+        // THIS should be class WeatherStore, not this of the FUNCTION
+        let that = this;
         const response = yield fetch(`https://abnormal-weather-api.herokuapp.com/cities/search?city=${city}`);
         const data = yield response.json();
-        console.log(data);
+        console.log('loadWeatherGenerator', data);
 
         // Every time we yield control to parents.
         // this["weatherData"] = data;
-        // this.weatherData = data;
+        that["weatherData"] = data;
     });
 }
 
@@ -89,3 +93,6 @@ decorate(WeatherStore, {
 });
 
 export default new WeatherStore();
+
+// https://medium.com/@mweststrate/mobx-4-better-simpler-faster-smaller-c1fbc08008da
+// https://mobx.js.org/best/actions.html

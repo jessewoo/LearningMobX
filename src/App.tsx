@@ -47,7 +47,6 @@ class App extends Component<Props, State> {
 
     componentWillMount() {
         this.props.galleryStore.fetchImages("Mountains");
-
         this.props.weatherStore.loadWeatherGenerator("Toronto, ON, Canada");
     }
 
