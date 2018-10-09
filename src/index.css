@@ -3,3 +3,28 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.images-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.images-container .image {
+  padding: 10px;
+}
+
+#searchForm {
+  float: right;
+  padding: 10px;
+  margin-right: 20px;
+}
+
+#searchForm input,
+#searchForm button {
+  padding: 10px 20px;
+}
+
+#searchForm button {
+  background-color: #222222;
+  color: #ffffff;
+}

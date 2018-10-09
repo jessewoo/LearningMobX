@@ -18,10 +18,13 @@ import BirdStore from './stores/BirdStore';
 import GalleryStore from './stores/GalleryStore';
 const galleryStore = new GalleryStore();
 
+import WeatherStore from './stores/WeatherStore';
+
+
 // By wrapping Provider to our app, the app has access to the stores that is in the provider
 // With Redux, MobX and state management, take STATE out of the component - pass it back in somehow
 const Root = (
-    <Provider birdStore={BirdStore} galleryStore={galleryStore}>
+    <Provider birdStore={BirdStore} galleryStore={galleryStore} weatherStore={WeatherStore}>
         <App/>
     </Provider>
 );

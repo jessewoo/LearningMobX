@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {inject, observer} from 'mobx-react';
+import { inject, observer } from 'mobx-react';
+import JSONPretty from "react-json-pretty";
 
 // Inject into our app the BirdStore, same name as the store from PROVIDER
 // This component is an observer. When the data changes for store, it will force the component to change
@@ -9,13 +10,14 @@ export interface Props {
     birdStore?: any;
     bird?:any;
     galleryStore?: any;
+    weatherStore?: any;
 }
 
 export interface State {
 }
 
-@inject('birdStore', 'galleryStore')
-@observer
+// @inject('birdStore', 'galleryStore', 'weatherStore')
+// @observer
 class App extends Component<Props, State> {
     constructor(props: Props) {
         super(props);
@@ -35,8 +37,18 @@ class App extends Component<Props, State> {
         this["bird"].value = '';
     };
 
+    // Create class level function. Stop form from submitting
+    onSubmitSearch = (e: any) => {
+        e.preventDefault();
+        const search_term = this["search_term"].value;
+        this.props.galleryStore.fetchImages(search_term);
+        this["search_term"].value = '';
+    };
+
     componentWillMount() {
         this.props.galleryStore.fetchImages("Mountains");
+
+        this.props.weatherStore.loadWeatherGenerator("Toronto, ON, Canada");
     }
 
     render() {
@@ -44,11 +56,8 @@ class App extends Component<Props, State> {
         // console.log(birdStore);
 
         const { birdStore, galleryStore } = this.props;
-
-        console.log('Gallery Store', galleryStore);
-
+        // console.log('Gallery Store', galleryStore);
         const { term, status, images } = galleryStore;
-
 
         return (
             <div className="App">
@@ -71,31 +80,28 @@ class App extends Component<Props, State> {
                         </li>
                     ))}
                 </ul>
-                <br/>
-                <hr/>
-                <br/>
-                <br/>
-
+                <br/><hr/><br/><br/>
                 <h1>Easy MobX and Redux Comparison</h1>
+                <form id="searchForm" className="form" onSubmit={e => this.onSubmitSearch(e)}>
+                    <input type="text" ref={input => {this["search_term"] = input}} placeholder="Enter your search term"/>
+                    <button>Search</button>
+                </form>
                 <p>https://www.leighhalliday.com/easy-mobx-redux-comparison</p>
                 <p>https://www.youtube.com/watch?v=CA8w-zNmnpc</p>
-                <br/>
+                <br/><hr/>
 
                 {status === "searching" && <h3>Searching for {term}</h3>}
                 {status === "done" && images.length === 0 && (
-                    <h3>
-                        Sorry sucker, no results{" "}
-                        <span role="img" aria-label="sad"></span>
-                    </h3>
+                    <h3>Sorry sucker, no results for {term}</h3>
                 )}
                 {status === "error" && <h3>Oops... error!</h3>}
-
 
                 <div className="images-container">
                     {images.map( (image:any) => {
                         const description = image.categories.length > 0 ? image.categories[0].title : image.user.name;
                         return (
-                            <div key={image.id}>
+                            <div key={image.id} className="image">
+                                <h3>{description}</h3>
                                 <a href={image.links.html} target="_blank">
                                     <img src={image.urls.small} alt={description} />
                                 </a>
@@ -103,11 +109,22 @@ class App extends Component<Props, State> {
                         )}
                     )}
                 </div>
+
+                <br/><hr/><br/><br/>
+                <h1>Async in MobX - JSON Pretty</h1>
+                <p>https://www.youtube.com/watch?v=r2rIen5pEbQ</p>
+                <p>https://www.leighhalliday.com/mobx-async-actions</p>
+                <div>
+                    <JSONPretty json={this.props.weatherStore.weatherData}/>
+                </div>
+
             </div>
         );
     }
 }
 
-export default App;
+// https://www.youtube.com/watch?v=r2rIen5pEbQ
+// Observer - update App when there are changes in the data
+export default inject("birdStore", "galleryStore", "weatherStore")(observer(App));
 
 // https://www.youtube.com/watch?v=CA8w-zNmnpc
