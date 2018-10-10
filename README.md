@@ -27,7 +27,7 @@ Tuturials on MobX
     * [Material UI](https://material-ui.com/)
 * Template Creation
     * [create-react-app](https://github.com/facebookincubator/create-react-app) - tool to quickly get set up.
-    * [Typescript React](https://github.com/Microsoft/TypeScript-React-Starter) - from Microsoft
+    * [Typescript React](https://github.com/Microsoft/TypeScript-React-Starter) - uses create-react-app, from Microsoft, add in "experimentalDecorators": true to use decorators
 
 
 ## Resource Articles
@@ -54,3 +54,9 @@ https://news.ycombinator.com/item?id=16918675
 
 
 https://mobx.js.org/best/store.html#best-practices-for-building-large-scale-maintainable-projects
+https://shellmonger.com/2017/08/11/integrating-react-native-typescript-mobx/
+
+https://mobx.js.org/intro/concepts.html
+https://mobx.js.org/best/react-performance.html
+
+https://hackernoon.com/becoming-fully-reactive-an-in-depth-explanation-of-mobservable-55995262a254

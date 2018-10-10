@@ -4,6 +4,8 @@ import JSONPretty from "react-json-pretty";
 
 import InvoiceItem from './components/InvoiceItem'
 
+import DevTools from "mobx-react-devtools"
+
 // Inject into our app the BirdStore, same name as the store from PROVIDER
 // This component is an observer. When the data changes for store, it will force the component to change
 // To Re-render the component
@@ -17,6 +19,8 @@ export interface Props {
 }
 
 export interface State {
+    latitude: number;
+    longitude: number;
 }
 
 // @inject('birdStore', 'galleryStore', 'weatherStore')
@@ -26,6 +30,13 @@ class App extends Component<Props, State> {
         super(props);
 
         console.log(props);
+
+        this.state = {
+            latitude: 0,
+            longitude: 0
+        }
+
+
     }
 
     // Create class level function. Stop form from submitting
@@ -53,6 +64,54 @@ class App extends Component<Props, State> {
         this.props.weatherStore.loadWeatherGenerator("Toronto, ON, Canada");
     }
 
+    componentDidMount() {
+        if ("geolocation" in navigator) {
+            // Calling a FUNCTION that returns a PROMISES
+            this.loadPositionNew();
+        }
+    }
+
+    // Promises
+    public getCurrentPosition = (options = {}) => {
+        return new Promise((accept, reject) => {
+            navigator.geolocation.getCurrentPosition(accept, reject, options);
+        })
+    };
+
+    // In order to use AWAIT, you use to ASYNC otherwise it will give error
+    // Anytime you use a promise, instead of using .then, you can use new keyword "await"
+    // Position - let's await for the current position
+    // Then we can do the typical stuff and set state
+    loadPositionNew = async () => {
+        try {
+            // This is when we do the ACCEPT part of our Promises
+            const position = await this.getCurrentPosition();
+            const { latitude, longitude } = position["coords"];
+            this.setState({ latitude, longitude });
+        } catch(error) {
+            // When things screw up, we use a catch, this is the REJECT called
+            console.log("Error", error)
+        }
+    }
+
+
+    // Regular way of using CALLBACKS
+    loadPosition = () => {
+        navigator.geolocation.getCurrentPosition(
+            // First CALLBACK, giving the position and then we can extract out the position, callback on success
+            position => {
+                const { latitude, longitude } = position.coords;
+                this.setState({ latitude, longitude });
+            },
+            // Second CALLBACK on failure
+            () => {
+                console.log("Error getting geolocation");
+            },
+            // Some options
+            {}
+        );
+    };
+
     render() {
         // const birdStore = this.props.birdStore;
         // console.log(birdStore);
@@ -64,6 +123,13 @@ class App extends Component<Props, State> {
 
         return (
             <div className="App">
+                <h1>Converting callbacks signature into Promises with async/await</h1>
+                <p>https://www.youtube.com/watch?v=5_luZf5xUpk&t=22s</p>
+                <p>Latitude: {this.state.latitude}</p>
+                <p>Longitude: {this.state.longitude}</p>
+
+
+                <br/><hr/><br/><br/>
 
                 <h1>Introduction to MobX State Tree</h1>
                 <p>https://github.com/leighhalliday/invoice-mobx-state-tree</p>
@@ -167,6 +233,7 @@ class App extends Component<Props, State> {
                     <JSONPretty json={this.props.weatherStore.weatherData}/>
                 </div>
 
+                <DevTools/>
             </div>
         );
     }
