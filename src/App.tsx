@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import { inject, observer } from 'mobx-react';
 import JSONPretty from "react-json-pretty";
 
+import InvoiceItem from './components/InvoiceItem'
+
 // Inject into our app the BirdStore, same name as the store from PROVIDER
 // This component is an observer. When the data changes for store, it will force the component to change
 // To Re-render the component
@@ -11,6 +13,7 @@ export interface Props {
     bird?:any;
     galleryStore?: any;
     weatherStore?: any;
+    invoiceModel?: any;
 }
 
 export interface State {
@@ -21,16 +24,16 @@ export interface State {
 class App extends Component<Props, State> {
     constructor(props: Props) {
         super(props);
+
+        console.log(props);
     }
 
     // Create class level function. Stop form from submitting
     handleSubmit = (e: any) => {
         e.preventDefault();
-
         // Use the reference tool we setup
         const bird = this["bird"].value;
         // console.log(bird);
-
         // Use $r to access the reference.
 
         this.props.birdStore.addBird(bird);
@@ -54,12 +57,59 @@ class App extends Component<Props, State> {
         // const birdStore = this.props.birdStore;
         // console.log(birdStore);
 
-        const { birdStore, galleryStore } = this.props;
+        const { birdStore, galleryStore, invoiceModel } = this.props;
         // console.log('Gallery Store', galleryStore);
         const { term, status, images } = galleryStore;
+        // console.log(invoiceModel);
 
         return (
             <div className="App">
+
+                <h1>Introduction to MobX State Tree</h1>
+                <p>https://github.com/leighhalliday/invoice-mobx-state-tree</p>
+                <p>https://www.youtube.com/watch?v=pPgOrecfcg4</p>
+                <h4>{invoiceModel.status()}</h4>
+                {!invoiceModel.is_paid && <button onClick={e => {
+                    e.preventDefault();
+                    invoiceModel.markPaid();
+                }}>Pay</button>}
+
+                <form id="stateTreeForm" onSubmit={e => {
+                    e.preventDefault();
+                    invoiceModel.itemList.add({
+                        name: this["nameInput"].value,
+                        quantity: parseInt(this["quantityInput"].value, 10),
+                        price: parseFloat(this["priceInput"].value)
+                    });
+                    e.currentTarget.reset();
+                    this["nameInput"].focus();
+                }}>
+                    <div>
+                        <label htmlFor="name">Name</label>
+                        <input type="text" ref={input => (this["nameInput"] = input) } id="name"/>
+                    </div>
+                    <div>
+                        <label htmlFor="quantity">Quantity</label>
+                        <input type="number" ref={input => (this["quantityInput"] = input) } id="quantity"/>
+                    </div>
+                    <div>
+                        <label htmlFor="price">Price</label>
+                        <input type="number" min="1" step="any" ref={input => (this["priceInput"] = input) } id="price"/>
+                    </div>
+                    <div>
+                        <button type="submit">Add</button>
+                    </div>
+                    <hr/>
+                </form>
+
+                <h2>Total: ${invoiceModel.itemList.total().toFixed(2)}</h2>
+                <ul>
+                    {invoiceModel.itemList.items.map((item:any,i:number) => (
+                        <InvoiceItem item={item} key={i}/>
+                    ))}
+                </ul>
+
+                <br/><hr/><br/><br/>
                 <h1>Create React App with MobX using Decorators</h1>
                 <p>https://www.leighhalliday.com/create-react-app-mobx-decorators</p>
                 <p>https://www.youtube.com/watch?v=Dp75-DnGFrU</p>
@@ -124,6 +174,6 @@ class App extends Component<Props, State> {
 
 // https://www.youtube.com/watch?v=r2rIen5pEbQ
 // Observer - update App when there are changes in the data
-export default inject("birdStore", "galleryStore", "weatherStore")(observer(App));
+export default inject("birdStore", "galleryStore", "weatherStore", "invoiceModel")(observer(App));
 
 // https://www.youtube.com/watch?v=CA8w-zNmnpc

@@ -1,7 +1,7 @@
 import { decorate, action, observable, configure, runInAction, flow } from "mobx";
 
 // Have it on default, write MobX code correctly
-configure({ enforceActions: true });
+configure({ enforceActions: "observed" });
 
 class WeatherStore {
     // @observable
@@ -71,21 +71,34 @@ class WeatherStore {
     // What FLOW will do - yield control
     // It will wrap around with a FLOW function, every time we yield control, this will be wrapped in action like runInAction
     // READS more like a code in async await, don't need to show RunInAction
+    // https://github.com/mobxjs/mobx/issues/1405
+
+    // https://dev.to/acro5piano/mobx-tips-new-api-named-flow-confusing-name-3gjk
+    // https://stackoverflow.com/questions/16157839/typescript-this-inside-a-class-method
+    // NEED: try bind this to the class in generator function
     loadWeatherGenerator = flow(function*(this:any, city:string) {
         // THIS should be class WeatherStore, not this of the FUNCTION
-        let that = this;
+        // Got to do this every time?
+        let _this = this;
+
         const response = yield fetch(`https://abnormal-weather-api.herokuapp.com/cities/search?city=${city}`);
         const data = yield response.json();
         console.log('loadWeatherGenerator', data);
+        // weatherData = data;
 
         // Every time we yield control to parents.
-        // this["weatherData"] = data;
-        that["weatherData"] = data;
+        // https://www.typescriptlang.org/docs/handbook/functions.html#this
+        // that["weatherData"] = data;
+        _this.weatherData = data;
+
+        // ISSUE: potentially invalid reference access to a class field via this of a nested function
+        // this.weatherData = data;
     });
 }
 
 // Don't need decorators up top but here it decorates it all
 // Don't need to eject the create-react-app
+// ISSUE- Flow expects one 1 argument and cannot be used as decorator
 decorate(WeatherStore, {
     weatherData: observable,
     setWeather: action,
