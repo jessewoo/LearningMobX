@@ -48,3 +48,9 @@ https://news.ycombinator.com/item?id=16918675
 * Mobx's observers on react render methods makes the renders far more efficient than what could be achieved with react-redux easily, without really ensuring that the props being passed in are as granular as necessary or shouldComponentUpdate is correctly identifying state changes. In mobx, the most granular access of the lowest level state can be detected within a render method, and only when that very specific value is replaced is the component rendered.
 * Computed values on mobx-state-tree are baked in without the need for something like reselect  
 * easier to gain an understanding of the moving parts of my application; how actions, derived data and data work together. On the other hand the support for Typescript is a bit clunky and leads to slow compilation. Mitigating the compile time leads to a bit of boiler plate.
+
+## Research
+* https://www.youtube.com/watch?v=5_luZf5xUpk - Converting callbacks into async / await
+
+
+https://mobx.js.org/best/store.html#best-practices-for-building-large-scale-maintainable-projects
