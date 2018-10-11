@@ -9,9 +9,10 @@ Tuturials on MobX
     * TypeScript
 * Linting: 
     * [TSLint](https://github.com/palantir/tslint)
-* Testing: 
+* Testing: (do later, can't figure out configuration files)
     * [Jest](https://facebook.github.io/jest/)
     * [Enzyme](http://airbnb.io/enzyme/)
+    * Resources - https://basarat.gitbooks.io/typescript/docs/testing/jest.html
 * State Management: 
     * [MobX](https://github.com/mobxjs/mobx)
     * [MobX React](https://github.com/mobxjs/mobx-react)
@@ -51,12 +52,28 @@ https://news.ycombinator.com/item?id=16918675
 
 ## Research
 * https://www.youtube.com/watch?v=5_luZf5xUpk - Converting callbacks into async / await
+* https://mobx.js.org/best/store.html#best-practices-for-building-large-scale-maintainable-projects
+* https://shellmonger.com/2017/08/11/integrating-react-native-typescript-mobx/
+* https://mobx.js.org/intro/concepts.html
+* https://mobx.js.org/best/react-performance.html
+* https://hackernoon.com/becoming-fully-reactive-an-in-depth-explanation-of-mobservable-55995262a254
 
-
-https://mobx.js.org/best/store.html#best-practices-for-building-large-scale-maintainable-projects
-https://shellmonger.com/2017/08/11/integrating-react-native-typescript-mobx/
-
-https://mobx.js.org/intro/concepts.html
-https://mobx.js.org/best/react-performance.html
-
-https://hackernoon.com/becoming-fully-reactive-an-in-depth-explanation-of-mobservable-55995262a254
+## How to Structure STORE in MobX, multipage 
+* https://swizec.com/blog/structure-mobx-app-real-world/swizec/7181
+* https://medium.com/@mjewell/multi-page-mobx-a5c6bff7cc54
+    * App Store
+    * UI Store
+    * Page Store
+* https://github.com/mobxjs/mobx/issues/1155
+* https://github.com/mobxjs/mobx/issues/1192 (SINGLETON)
+* https://github.com/gothinkster/react-mobx-realworld-example-app
+    * https://react-mobx.realworld.io/#/
+    
+    
+    
+## Other Libraries
+* Internationalization - https://medium.com/@shalkam/create-react-app-i18n-the-easy-way-b05536c594cb
+* AutoPrefixer https://www.npmjs.com/package/autoprefixer
+* SASS - https://medium.com/@oreofeolurin/configuring-scss-with-react-create-react-app-1f563f862724
+* Flexbox - https://www.npmjs.com/package/react-flexbox-grid, https://css-tricks.com/snippets/css/a-guide-to-flexbox/
+* HMR (Hot Module Reload) - https://medium.com/@brianhan/hot-reloading-cra-without-eject-b54af352c642

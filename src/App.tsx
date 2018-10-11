@@ -4,6 +4,8 @@ import JSONPretty from "react-json-pretty";
 
 import InvoiceItem from './components/InvoiceItem'
 
+import unsplash from "./services/unsplash";
+
 import DevTools from "mobx-react-devtools"
 
 // Inject into our app the BirdStore, same name as the store from PROVIDER
@@ -21,6 +23,9 @@ export interface Props {
 export interface State {
     latitude: number;
     longitude: number;
+    status: string;
+    term: string;
+    imagesTest: []
 }
 
 // @inject('birdStore', 'galleryStore', 'weatherStore')
@@ -33,10 +38,11 @@ class App extends Component<Props, State> {
 
         this.state = {
             latitude: 0,
-            longitude: 0
+            longitude: 0,
+            status: "",
+            term: "",
+            imagesTest: []
         }
-
-
     }
 
     // Create class level function. Stop form from submitting
@@ -69,7 +75,31 @@ class App extends Component<Props, State> {
             // Calling a FUNCTION that returns a PROMISES
             this.loadPositionNew();
         }
+
+        this.fetchNewImages("Basketball");
     }
+
+    fetchNewImages = async (term:string) => {
+        this.setState({
+            status: "searching",
+            term: term,
+            imagesTest: []
+        });
+
+        try {
+            // It's an ASYNC promise, need await
+            const imagesTest = await unsplash(term);
+            console.log("Images for Basketball", imagesTest);
+            this.setState({
+                status: "done",
+                imagesTest
+            });
+        } catch (error) {
+            this.setState({
+                status: "error"
+            });
+        }
+    };
 
     // Promises
     public getCurrentPosition = (options = {}) => {
@@ -123,6 +153,29 @@ class App extends Component<Props, State> {
 
         return (
             <div className="App">
+                <h1>PAUSE - Testing Asynchronous Components with Mocks in Jest</h1>
+                <p>Refactoring, pulled out fetch image function to services module</p>
+                <p>https://www.youtube.com/watch?v=uo0psyTxgQM&t=971s</p>
+                {/*<div>*/}
+                    {/*<JSONPretty json={this.state.imagesTest}/>*/}
+                {/*</div>*/}
+
+                <div className="images-container">
+                    {this.state.imagesTest.map( (image:any) => {
+                        const description = image.categories.length > 0 ? image.categories[0].title : image.user.name;
+                        return (
+                            <div key={image.id} className="image">
+                                <h3>{description}</h3>
+                                <a href={image.links.html} target="_blank">
+                                    <img src={image.urls.small} alt={description} />
+                                </a>
+                            </div>
+                        )}
+                    )}
+                </div>
+
+                <br/><hr/><br/><br/>
+
                 <h1>Converting callbacks signature into Promises with async/await</h1>
                 <p>https://www.youtube.com/watch?v=5_luZf5xUpk&t=22s</p>
                 <p>Latitude: {this.state.latitude}</p>
@@ -211,6 +264,7 @@ class App extends Component<Props, State> {
                 )}
                 {status === "error" && <h3>Oops... error!</h3>}
 
+                {/* WOULD BE GOOD TO DO PROP TYPES*/}
                 <div className="images-container">
                     {images.map( (image:any) => {
                         const description = image.categories.length > 0 ? image.categories[0].title : image.user.name;

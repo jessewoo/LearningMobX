@@ -38,6 +38,7 @@ onPatch(invoice, patch => {
 import makeInspectable from "mobx-devtools-mst"
 makeInspectable(invoice);
 
+// https://mobx.js.org/best/store.html
 // By wrapping Provider to our app, the app has access to the stores that is in the provider
 // With Redux, MobX and state management, take STATE out of the component - pass it back in somehow
 const Root = (
