@@ -153,6 +153,11 @@ class App extends Component<Props, State> {
 
         return (
             <div className="App">
+                <h1>NODE_ENV Variable: {process.env.NODE_ENV}</h1>
+                <h1>Temp REACT_APP_ENV Variable: {process.env.REACT_APP_ENV}</h1>
+
+                <br/><hr/><br/><br/>
+
                 <h1>PAUSE - Testing Asynchronous Components with Mocks in Jest</h1>
                 <p>Refactoring, pulled out fetch image function to services module</p>
                 <p>https://www.youtube.com/watch?v=uo0psyTxgQM&t=971s</p>

@@ -74,6 +74,21 @@ https://news.ycombinator.com/item?id=16918675
 ## Other Libraries
 * Internationalization - https://medium.com/@shalkam/create-react-app-i18n-the-easy-way-b05536c594cb
 * AutoPrefixer https://www.npmjs.com/package/autoprefixer
-* SASS - https://medium.com/@oreofeolurin/configuring-scss-with-react-create-react-app-1f563f862724
+* SASS
+    * https://medium.com/@oreofeolurin/configuring-scss-with-react-create-react-app-1f563f862724
+    * https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#adding-a-sass-stylesheet
 * Flexbox - https://www.npmjs.com/package/react-flexbox-grid, https://css-tricks.com/snippets/css/a-guide-to-flexbox/
 * HMR (Hot Module Reload) - https://medium.com/@brianhan/hot-reloading-cra-without-eject-b54af352c642
+* Code Splitting
+    * https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#code-splitting
+    * https://serverless-stack.com/chapters/code-splitting-in-create-react-app.html 
+    * https://reactjs.org/docs/code-splitting.html
+* Environments variables
+    * https://serverless-stack.com/chapters/environments-in-create-react-app.html
+    * https://stackoverflow.com/questions/42458434/how-to-set-build-env-variables-when-running-create-react-app-build-script
+    * https://medium.com/@tacomanator/environments-with-create-react-app-7b645312c09d
+    * https://stackoverflow.com/questions/9198310/how-to-set-node-env-to-production-development-in-os-x/22282953
+    
+    
+    
+https://github.com/wmonk/create-react-app-typescript/blob/master/template/README.md#npm-start
