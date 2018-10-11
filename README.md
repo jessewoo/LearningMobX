@@ -88,7 +88,11 @@ https://news.ycombinator.com/item?id=16918675
     * https://stackoverflow.com/questions/42458434/how-to-set-build-env-variables-when-running-create-react-app-build-script
     * https://medium.com/@tacomanator/environments-with-create-react-app-7b645312c09d
     * https://stackoverflow.com/questions/9198310/how-to-set-node-env-to-production-development-in-os-x/22282953
-    
+* Portals
+    * https://reactjs.org/docs/portals.html
+    * https://www.npmjs.com/package/react-portal
+    * https://hackernoon.com/using-a-react-16-portal-to-do-something-cool-2a2d627b0202
+    * https://assortment.io/posts/accessible-modal-component-react-portals-part-1
     
     
 https://github.com/wmonk/create-react-app-typescript/blob/master/template/README.md#npm-start
